@@ -9,10 +9,8 @@ const mainLightTheme = {
   dark: false,
   colors: {
     background: '#F5F5F5',
-    primary: '#0092CA',
-    'primary-darken-1': '#0087BB',
+    primary: '#0075ca',
     secondary: '#FFD700',
-    'secondary-darken-1': '#DCB900',
     error: '#FF4444',
     info: '#5121F3',
     success: '#4CAF50',
@@ -25,6 +23,11 @@ export default createVuetify(
   {
     theme: {
       defaultTheme: 'mainLightTheme',
+      variations: {
+        colors: ['primary', 'secondary'],
+        lighten: 2,
+        darken: 2,
+      },
       themes: {
         mainLightTheme,
       },
