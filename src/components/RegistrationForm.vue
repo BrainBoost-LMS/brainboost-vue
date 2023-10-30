@@ -5,7 +5,7 @@
           <h1 class="text-uppercase mb-6">Welcome!</h1>
           <p class="mb-10"><b>BrainBoost</b> is an innovative online learning platform that caters to students of all ages and backgrounds. Its design focuses on delivering an engaging learning experience that's both dynamic and effective. With a user-friendly interface and a wealth of resources, it makes education enjoyable and accessible to a wide audience.</p>
           <h3 class="text-uppercase mb-9 mb-md-16" style="font-family: 'Barlow Semi Condensed';font-size: 25px;">Boost your mind, boost your future</h3>
-          <v-btn class="text-uppercase" style="height: 50px;">
+          <v-btn @click="$router.push('/login')" class="text-uppercase" style="height: 50px;">
             Have an account?
           </v-btn>
         </v-col>
@@ -36,7 +36,7 @@
                 I agree to the <a href="/terms">Terms and Conditions</a>
               </div>
             </div>
-            <v-btn @click="registerUser()" :disabled="isRegisterDisabled" class="text-uppercase" color="primary" style="height: 50px;">
+            <v-btn :loading="registerationLoading" @click="registerUser()" :disabled="isRegisterDisabled" class="text-uppercase" color="primary" style="height: 50px;">
             Register
             </v-btn>
           </v-container>
@@ -52,9 +52,6 @@ export default {
   name: 'RegistrationForm',
   components:{
     InputField
-  },
-  watch:{
-    
   },
   computed: {
     confirmPasswordRules() {
@@ -74,6 +71,7 @@ export default {
     password: null,
     confirmPassword: null,
     terms: null,
+    registerationLoading: false,
     rules:{
       nameRules: [
         value => !!value || 'Name is required',
@@ -94,16 +92,28 @@ export default {
   }),
   methods: {
     registerUser() {
+      this.registerationLoading = true;
       this.$axios.post('/users/',{
         email: this.email,
         name: `${this.firstName} ${this.lastName}`,
         password: this.password
       })
-      .then((response) => {
-        console.log(response)
+      .then(() => {
+        this.$router.push('/login')
       })
       .catch((err) => {
-        console.log(err)
+        let keys = Object.keys(err.response.data)
+        let error_message = ''
+        keys.map((error)=>{
+          err.response.data[error].map((msg) => {
+            error_message += `${msg}\n`
+          })
+        })
+        error_message = error_message.slice(0,-1)
+        this.$store.dispatch('showSnackbar',{ message: error_message })
+      })
+      .finally(()=>{
+        this.registerationLoading = false;
       })
     },
   },

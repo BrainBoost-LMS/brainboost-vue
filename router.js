@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import LoginPage from './src/views/LoginPage.vue'
 import RegistrationPage from './src/views/RegistrationPage.vue';
+import TermsPage from './src/views/TermsPage.vue';
 
 const routes = [
   {
@@ -8,7 +10,18 @@ const routes = [
     component: RegistrationPage,
     meta: { title: 'BrainBoost - Register' }
   },
-  
+  {
+    path: '/terms',
+    name: 'TermsPage',
+    component: TermsPage,
+    meta: { title: 'BrainBoost - Terms' }
+  },
+  {
+    path: '/login',
+    name: 'LoginPage',
+    component: LoginPage,
+    meta: { title: 'BrainBoost - Login' }
+  },
 ];
 
 const router = createRouter({
